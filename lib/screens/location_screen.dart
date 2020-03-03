@@ -11,6 +11,7 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel _weather = WeatherModel();
   @override
   void initState() {
     super.initState();
@@ -50,7 +51,10 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      var w = await _weather.getLocationWeather();
+                      updateUI(w);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
@@ -74,7 +78,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kTempTextStyle,
                     ),
                     Text(
-                      WeatherModel().getWeatherIcon(condition),
+                      _weather.getWeatherIcon(condition),
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -83,7 +87,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "${WeatherModel().getMessage(temperature)} in $cityName!",
+                  "${_weather.getMessage(temperature)} in $cityName!",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
